@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:app="http://schemas.android.com/apk/res-auto" android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+    <TextView
+            android:text="Repo Name"
+            android:textStyle="bold"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" android:layout_alignParentTop="true"
+            android:layout_alignParentLeft="true" android:layout_alignParentStart="true"
+            android:layout_marginLeft="17dp" android:layout_marginStart="17dp" android:layout_marginTop="17dp"
+            android:id="@+id/name"/>
+    <TextView android:layout_width="match_parent" android:layout_height="wrap_content"
+              android:id="@+id/description"
+              android:text="Repo Description ....."
+              android:layout_below="@+id/name"
+              android:layout_alignLeft="@+id/name"
+    />
+    <LinearLayout android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  android:orientation="horizontal"
+                  android:layout_below="@+id/description" android:layout_alignLeft="@+id/description"
+                  android:layout_alignStart="@+id/description" android:layout_marginTop="18dp"
+                  android:id="@+id/linearLayout">
+        <ImageView android:layout_width="48dp" android:layout_height="48dp"
+                   android:id="@+id/avatar"
+                   android:src="@android:drawable/ic_menu_gallery"
+                   android:scaleType="centerInside"
+        />
+        <TextView android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  android:id="@+id/owner"
+                  android:text="Owner Name"
+                  android:layout_gravity="center_vertical"
+        />
+    </LinearLayout>
+    <TextView
+            android:text="5.4K"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/star_count"
+            android:textStyle="bold"
+            android:layout_alignBottom="@+id/imageView" android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"/>
+    <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" app:srcCompat="@drawable/ic_star"
+            android:id="@+id/imageView"
+            android:layout_marginBottom="11dp"
+            android:layout_alignBottom="@+id/linearLayout" android:layout_toLeftOf="@+id/star_count"
+            android:layout_toStartOf="@+id/star_count"/>
+
+</RelativeLayout>

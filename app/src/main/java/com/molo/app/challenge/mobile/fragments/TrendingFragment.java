@@ -10,6 +10,9 @@ import android.view.ViewGroup;
 
 import android.widget.ListView;
 import com.molo.app.challenge.mobile.R;
+import com.molo.app.challenge.mobile.adapters.RepositoryListAdapter;
+import com.molo.app.challenge.mobile.models.Owner;
+import com.molo.app.challenge.mobile.models.Repository;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -20,6 +23,7 @@ import com.molo.app.challenge.mobile.R;
  * create an instance of this fragment.
  */
 public class TrendingFragment extends Fragment {
+    private RepositoryListAdapter repositoryListAdapter;
     private ListView repositoryList;
     private OnFragmentInteractionListener mListener;
 
@@ -55,6 +59,15 @@ public class TrendingFragment extends Fragment {
         // Inflate the layout for this fragment
         View v= inflater.inflate(R.layout.fragment_trending, container, false);
         repositoryList=v.findViewById(R.id.repository_list);
+        repositoryListAdapter=new RepositoryListAdapter(getContext());
+        //for test case
+        repositoryListAdapter.add(new Repository(12,"molo-c-utils","une libraire ecrite en c",2452,new Owner("molobala","https://avatars2.githubusercontent.com/u/1728152?v=4",1)));
+        repositoryListAdapter.add(new Repository(12,"molo-c-utils","une libraire ecrite en c",2452,new Owner("molobala","https://avatars2.githubusercontent.com/u/1728152?v=4",1)));
+        repositoryListAdapter.add(new Repository(12,"molo-c-utils","une libraire ecrite en c",2452,new Owner("molobala","https://avatars2.githubusercontent.com/u/1728152?v=4",1)));
+        repositoryListAdapter.add(new Repository(12,"molo-c-utils","une libraire ecrite en c",2452,new Owner("molobala","https://avatars2.githubusercontent.com/u/1728152?v=4",1)));
+        repositoryListAdapter.add(new Repository(12,"molo-c-utils","une libraire ecrite en c",2452,new Owner("molobala","https://avatars2.githubusercontent.com/u/1728152?v=4",1)));
+        repositoryListAdapter.add(new Repository(12,"molo-c-utils","une libraire ecrite en c",2452,new Owner("molobala","https://avatars2.githubusercontent.com/u/1728152?v=4",1)));
+        repositoryList.setAdapter(repositoryListAdapter);
         return v;
     }
 
