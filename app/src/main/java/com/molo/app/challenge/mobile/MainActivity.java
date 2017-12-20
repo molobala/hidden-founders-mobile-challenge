@@ -5,23 +5,22 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
-import android.widget.TextView;
+
+import com.molo.app.challenge.mobile.fragments.TrendingFragment;
 
 public class MainActivity extends AppCompatActivity {
 
-    private TextView mTextMessage;
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
 
         @Override
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+            android.support.v4.app.FragmentManager fragmentManager=getSupportFragmentManager();
+            android.support.v4.app.FragmentTransaction transaction=fragmentManager.beginTransaction();
             switch (item.getItemId()) {
-                case R.id.navigation_home:
-                    mTextMessage.setText(R.string.title_star);
-                    return true;
-                case R.id.navigation_notifications:
-                    mTextMessage.setText(R.string.title_settings);
+                case R.id.trend:
+                    transaction.add(R.id.fragment,TrendingFragment.newInstance()).commit();
                     return true;
             }
             return false;
@@ -33,8 +32,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        mTextMessage = (TextView) findViewById(R.id.message);
+        getSupportFragmentManager().beginTransaction().add(R.id.fragment,TrendingFragment.newInstance()).commit();
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
     }
