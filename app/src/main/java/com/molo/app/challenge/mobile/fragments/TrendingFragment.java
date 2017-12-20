@@ -33,7 +33,6 @@ public class TrendingFragment extends Fragment {
      *
      * @return A new instance of fragment TrendingFragment.
      */
-    // TODO: Rename and change types and number of parameters
     public static TrendingFragment newInstance() {
         TrendingFragment fragment = new TrendingFragment();
         Bundle args = new Bundle();
