@@ -1,6 +1,7 @@
 package com.molo.app.challenge.mobile.adapters;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -40,7 +41,10 @@ public class RepositoryListAdapter extends ArrayAdapter<Repository>{
             holder.description.setText(repository.getDescription());
             holder.owner.setText(repository.getOwner().getLogin());
             //holder.avatar.setImageURI(Uri.parse(repository.getOwner().getAvatarUrl()));
-            new  Utils.DownloadImageTask(holder.avatar).execute(repository.getOwner().getAvatarUrl());
+            Bitmap bmp=Utils.resolveFromCache(repository.getOwner().getAvatarUrl());
+            if(bmp==null)
+                new  Utils.DownloadImageTask(holder.avatar).execute(repository.getOwner().getAvatarUrl());
+            else holder.avatar.setImageBitmap(bmp);
         }
         return convertView;
     }

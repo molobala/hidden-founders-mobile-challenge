@@ -14,11 +14,14 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
 import java.io.InputStream;
+import java.lang.ref.WeakReference;
+import java.util.HashMap;
+import java.util.Map;
 
 public class Utils {
     private static RequestQueue queue;
     public static String formatStarCount(int count){
-        return count/1000+"k";
+        return (float)((float)count/1000.0f)+"k";
     }
 
     public static void httpInit(RequestQueue requestQueue) {
@@ -29,27 +32,29 @@ public class Utils {
     }
     public static  class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
         ImageView bmImage;
-
+        private String url;
         public DownloadImageTask(ImageView bmImage) {
             this.bmImage = bmImage;
         }
 
         protected Bitmap doInBackground(String... urls) {
-            String urldisplay = urls[0];
-            Bitmap mIcon11 = null;
+            url = urls[0];
+            Bitmap mIcon = ImageCache.get(url);
+            if(mIcon!=null) return mIcon;
             try {
-                InputStream in = new java.net.URL(urldisplay).openStream();
-                mIcon11 = BitmapFactory.decodeStream(in);
+                InputStream in = new java.net.URL(url).openStream();
+                mIcon = BitmapFactory.decodeStream(in);
                 in.close();
             } catch (Exception e) {
                 Log.e("Error", e.getMessage());
                 e.printStackTrace();
             }
-            return mIcon11;
+            return mIcon;
         }
 
         protected void onPostExecute(Bitmap result) {
             bmImage.setImageBitmap(result);
+            ImageCache.put(url,result);
         }
     }
     public static interface HttpResultListener{
@@ -83,5 +88,18 @@ public class Utils {
         });
         queue.add(stringRequest);
         return stringRequest;//for other operation by the caller (like cancel for instance)
+    }
+    public static Bitmap resolveFromCache(String url){
+        return ImageCache.get(url);
+    }
+    private static class ImageCache{
+        private static Map<String,WeakReference<Bitmap>> images=new HashMap<>();
+        public static Bitmap get(String url){
+            WeakReference<Bitmap> ref= images.get(url);
+            return ref==null?null:ref.get();
+        }
+        public static void put(String url,Bitmap bitmap){
+            images.put(url,new WeakReference<Bitmap>(bitmap));
+        }
     }
 }
