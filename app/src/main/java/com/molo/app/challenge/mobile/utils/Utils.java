@@ -16,8 +16,16 @@ import com.android.volley.toolbox.Volley;
 import java.io.InputStream;
 
 public class Utils {
+    private static RequestQueue queue;
     public static String formatStarCount(int count){
         return count/1000+"k";
+    }
+
+    public static void httpInit(RequestQueue requestQueue) {
+        queue=requestQueue;
+    }
+    public static void callAllRequest(Object tag){
+        queue.cancelAll(tag);
     }
     public static  class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
         ImageView bmImage;
@@ -59,8 +67,9 @@ public class Utils {
 
         }
     }
-    public static void http(Context context,String url, final HttpResultListener listener){
-        RequestQueue queue = Volley.newRequestQueue(context);
+    public static StringRequest http(Context context,String url, final HttpResultListener listener){
+        if(queue==null)
+            queue = Volley.newRequestQueue(context);
         StringRequest stringRequest=new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
@@ -73,5 +82,6 @@ public class Utils {
             }
         });
         queue.add(stringRequest);
+        return stringRequest;//for other operation by the caller (like cancel for instance)
     }
 }
