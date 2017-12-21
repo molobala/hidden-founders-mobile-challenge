@@ -4,6 +4,7 @@ import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,6 +14,7 @@ import com.molo.app.challenge.mobile.R;
 import com.molo.app.challenge.mobile.adapters.RepositoryListAdapter;
 import com.molo.app.challenge.mobile.models.Owner;
 import com.molo.app.challenge.mobile.models.Repository;
+import com.molo.app.challenge.mobile.utils.Utils;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -68,6 +70,20 @@ public class TrendingFragment extends Fragment {
         repositoryListAdapter.add(new Repository(12,"molo-c-utils","une libraire ecrite en c",2452,new Owner("molobala","https://avatars2.githubusercontent.com/u/1728152?v=4",1)));
         repositoryListAdapter.add(new Repository(12,"molo-c-utils","une libraire ecrite en c",2452,new Owner("molobala","https://avatars2.githubusercontent.com/u/1728152?v=4",1)));
         repositoryList.setAdapter(repositoryListAdapter);
+        //test of http method
+        Utils.http(getContext(), "https://api.github.com/search/repositories?q=created:>2017-10-22&sort=stars&order=desc", new Utils.HttpResultAdapter() {
+            @Override
+            public void onSuccess(String jsonString) {
+                super.onSuccess(jsonString);
+                Log.e("TrendingFrag.CreateV",jsonString);
+            }
+
+            @Override
+            public void onFail(String err) {
+                super.onFail(err);
+                Log.e("TrendingFrag.CreateV",err);
+            }
+        });
         return v;
     }
 

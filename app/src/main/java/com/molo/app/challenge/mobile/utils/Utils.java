@@ -1,10 +1,17 @@
 package com.molo.app.challenge.mobile.utils;
 
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.util.Log;
 import android.widget.ImageView;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 
 import java.io.InputStream;
 
@@ -36,5 +43,35 @@ public class Utils {
         protected void onPostExecute(Bitmap result) {
             bmImage.setImageBitmap(result);
         }
+    }
+    public static interface HttpResultListener{
+        public void onSuccess(String jsonString);
+        public void onFail(String err);
+    }
+    public static abstract class  HttpResultAdapter implements HttpResultListener{
+        @Override
+        public void onSuccess(String jsonString) {
+
+        }
+
+        @Override
+        public void onFail(String err) {
+
+        }
+    }
+    public static void http(Context context,String url, final HttpResultListener listener){
+        RequestQueue queue = Volley.newRequestQueue(context);
+        StringRequest stringRequest=new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                if (listener != null) listener.onSuccess(response);
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                if(listener!=null) listener.onFail(error.getMessage());
+            }
+        });
+        queue.add(stringRequest);
     }
 }
