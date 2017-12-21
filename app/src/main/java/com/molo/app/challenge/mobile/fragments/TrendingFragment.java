@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import com.android.volley.toolbox.StringRequest;
 import com.molo.app.challenge.mobile.EndlessScrollListener;
 import com.molo.app.challenge.mobile.R;
@@ -34,6 +35,8 @@ public class TrendingFragment extends Fragment implements Utils.HttpResultListen
     private ListView repositoryList;
     private OnFragmentInteractionListener mListener;
     private StringRequest request;
+    private ProgressBar progressBar;
+    private boolean inProgress=false;
     private int currentPage=1;
     private boolean hasMoreData=true;
     private static final String REPOSITORY_URL="https://api.github.com/search/repositories?q=created:>2017-10-22&sort=stars&order=desc";
@@ -69,6 +72,7 @@ public class TrendingFragment extends Fragment implements Utils.HttpResultListen
         // Inflate the layout for this fragment
         View v= inflater.inflate(R.layout.fragment_trending, container, false);
         repositoryList=v.findViewById(R.id.repository_list);
+        progressBar=v.findViewById(R.id.progressBar);
         repositoryListAdapter=new RepositoryListAdapter(getContext());
         repositoryList.setAdapter(repositoryListAdapter);
         //for test case
@@ -105,8 +109,10 @@ public class TrendingFragment extends Fragment implements Utils.HttpResultListen
     }
 
     private boolean loadMore() {
-        if(!hasMoreData) return false;
+        if(!hasMoreData || inProgress) return false;
         request=Utils.http(getContext(),REPOSITORY_URL+"&page="+currentPage++,this);
+        inProgress=true;
+        progressBar.setVisibility(View.VISIBLE);
         return true;
     }
 
@@ -131,6 +137,8 @@ public class TrendingFragment extends Fragment implements Utils.HttpResultListen
     @Override
     public void onSuccess(String jsonString) {
         Log.e("TrendinFrag.onSucc",jsonString);
+        inProgress=false;
+        progressBar.setVisibility(View.GONE);
         //parse the json string into an array of repositories
         try {
             JSONObject res=new JSONObject(jsonString);
@@ -154,6 +162,8 @@ public class TrendingFragment extends Fragment implements Utils.HttpResultListen
 
     @Override
     public void onFail(String err) {
+        inProgress=false;
+        progressBar.setVisibility(View.GONE);
         Log.e("TrendinFrag.onSucc",err);
     }
 
