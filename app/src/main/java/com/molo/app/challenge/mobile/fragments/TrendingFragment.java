@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 
 import android.widget.ListView;
 import com.android.volley.toolbox.StringRequest;
+import com.molo.app.challenge.mobile.EndlessScrollListener;
 import com.molo.app.challenge.mobile.R;
 import com.molo.app.challenge.mobile.adapters.RepositoryListAdapter;
 import com.molo.app.challenge.mobile.models.Owner;
@@ -33,6 +34,8 @@ public class TrendingFragment extends Fragment implements Utils.HttpResultListen
     private ListView repositoryList;
     private OnFragmentInteractionListener mListener;
     private StringRequest request;
+    private int currentPage=1;
+    private boolean hasMoreData=true;
     private static final String REPOSITORY_URL="https://api.github.com/search/repositories?q=created:>2017-10-22&sort=stars&order=desc";
     public TrendingFragment() {
         // Required empty public constructor
@@ -90,8 +93,21 @@ public class TrendingFragment extends Fragment implements Utils.HttpResultListen
                 Log.e("TrendingFrag.CreateV",err);
             }
         });*/
-        request=Utils.http(getContext(),REPOSITORY_URL,this);
+        repositoryList.setOnScrollListener(new EndlessScrollListener() {
+            @Override
+            public boolean onLoadMore(int page, int totalItemsCount) {
+                return loadMore();
+            }
+        });
+        loadMore();
+        //request=Utils.http(getContext(),REPOSITORY_URL,this);
         return v;
+    }
+
+    private boolean loadMore() {
+        if(!hasMoreData) return false;
+        request=Utils.http(getContext(),REPOSITORY_URL+"&page="+currentPage++,this);
+        return true;
     }
 
 
@@ -117,7 +133,9 @@ public class TrendingFragment extends Fragment implements Utils.HttpResultListen
         Log.e("TrendinFrag.onSucc",jsonString);
         //parse the json string into an array of repositories
         try {
-            JSONArray array= new JSONObject(jsonString).getJSONArray("items");
+            JSONObject res=new JSONObject(jsonString);
+            hasMoreData=!res.getBoolean("incomplete_results");
+            JSONArray array= res.getJSONArray("items");
             for(int i=0;i<array.length();i++){
                 JSONObject o=array.getJSONObject(i);
                 //create new repo
