@@ -42,3 +42,7 @@ dependencies {
 
 If you don't use the code in a gradle project you may download the required libraries files from the net 
 to add them to the project.
+
+##Perspectives
+There are many things to improve in that application such as the images caching system,
+use of recycleview  instead of listView to display repositories,... 
