@@ -10,6 +10,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import com.molo.app.challenge.mobile.R;
 import com.molo.app.challenge.mobile.models.Repository;
+import com.molo.app.challenge.mobile.utils.Utils;
 
 public class RepositoryListAdapter extends ArrayAdapter<Repository>{
 
@@ -34,11 +35,12 @@ public class RepositoryListAdapter extends ArrayAdapter<Repository>{
         }
         Repository repository=getItem(position);
         if(repository!=null){
-            holder.starCount.setText(""+repository.getStargazersCount());
+            holder.starCount.setText(Utils.formatStarCount(repository.getStargazersCount()));
             holder.name.setText(repository.getName());
             holder.description.setText(repository.getDescription());
             holder.owner.setText(repository.getOwner().getLogin());
-            holder.avatar.setImageURI(Uri.parse(repository.getOwner().getAvatarUrl()));
+            //holder.avatar.setImageURI(Uri.parse(repository.getOwner().getAvatarUrl()));
+            new  Utils.DownloadImageTask(holder.avatar).execute(repository.getOwner().getAvatarUrl());
         }
         return convertView;
     }
