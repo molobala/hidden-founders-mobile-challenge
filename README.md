@@ -1,6 +1,6 @@
-##Hidden Founders Mobile coding challenge
+## Hidden Founders Mobile coding challenge
 A challenge proposed by Hidden Founders ([challenge on github here](https://github.com/hiddenfounders/mobile-coding-challenge))
-##Overview
+## Overview
 The challenge consists of making an Android or Ios Application
 listing the top trending repositories on Github in the last 30 days
 using Github REST API.  
@@ -43,6 +43,6 @@ dependencies {
 If you don't use the code in a gradle project you may download the required libraries files from the net 
 to add them to the project.
 
-##Perspectives
+## Perspectives
 There are many things to improve in that application such as the images caching system,
 use of recycleview  instead of listView to display repositories,... 
