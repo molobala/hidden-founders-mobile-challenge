@@ -15,8 +15,7 @@ import com.android.volley.toolbox.Volley;
 
 import java.io.InputStream;
 import java.lang.ref.WeakReference;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 public class Utils {
     private static RequestQueue queue;
@@ -39,8 +38,7 @@ public class Utils {
 
         protected Bitmap doInBackground(String... urls) {
             url = urls[0];
-            Bitmap mIcon = ImageCache.get(url);
-            if(mIcon!=null) return mIcon;
+            Bitmap mIcon = null;
             try {
                 InputStream in = new java.net.URL(url).openStream();
                 mIcon = BitmapFactory.decodeStream(in);
@@ -53,7 +51,7 @@ public class Utils {
         }
 
         protected void onPostExecute(Bitmap result) {
-            bmImage.setImageBitmap(result);
+            if(bmImage!=null) bmImage.setImageBitmap(result);
             ImageCache.put(url,result);
         }
     }

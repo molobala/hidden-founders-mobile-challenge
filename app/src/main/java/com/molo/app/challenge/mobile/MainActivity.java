@@ -23,7 +23,7 @@ public class MainActivity extends AppCompatActivity {
             android.support.v4.app.FragmentTransaction transaction=fragmentManager.beginTransaction();
             switch (item.getItemId()) {
                 case R.id.trend:
-                    transaction.add(R.id.fragment, TrendingFragment.newInstance()).commit();
+                    transaction.replace(R.id.fragment, TrendingFragment.newInstance()).commit();
                     return true;
             }
             return false;
